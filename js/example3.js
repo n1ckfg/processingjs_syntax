@@ -1,57 +1,61 @@
 "use strict";
 
-function sketch(processing) {
+function sketch(p) {
 
-	var numBalls = 500;
-	var ball = [];
-	var bgColor = processing.color(127,127,0);
+	const numBalls = 500;
+	let ball = [];
+	const bgColor = p.color(127,127,0);
 
-	processing.setup = function() {
-	  processing.size(640,480);
-	  for (var i=0; i<numBalls; i++) {
+	p.setup = function() {
+	  p.size(640,480);
+	  for (let i=0; i<numBalls; i++) {
 	    ball[i] = new Ball();
 	  }
-	  processing.background(bgColor);
+	  p.background(bgColor);
 	}
 
-	processing.draw = function() {
-	  processing.noStroke();
-	  processing.fill(bgColor,20);
-	  processing.rect(0,0,processing.width,processing.height);
-	  for (var i=0; i<numBalls; i++) {
+	p.draw = function() {
+	  p.noStroke();
+	  p.fill(bgColor, 20);
+	  p.rect(0, 0, p.width, p.height);
+	  for (let i=0; i<numBalls; i++) {
 	    ball[i].run();
 	  }
 	}
 
-	function Ball() {
-	  this.p = [ processing.random(processing.width), processing.random(processing.height)];
-	  this.spread =  processing.random(5);
-	  this.size =  processing.random(50);
-	}
+	class Ball {
 
-	Ball.prototype.update = function() {
-	  this.p[0] +=  processing.random(this.spread) -  processing.random(this.spread);
-	  this.p[1] +=  processing.random(this.spread) -  processing.random(this.spread);
-	}
+		constructor() {
+		  this.pos = [ p.random(p.width), p.random(p.height)];
+		  this.spread = p.random(5);
+		  this.size = p.random(50);
+		}
 
-	Ball.prototype.draw = function() {
-	  processing.noStroke();
-	  processing.fill(200+ processing.random(50),0,0,150);
-	  processing.ellipse(this.p[0],this.p[1],this.size,this.size);
-	  processing.fill(255, processing.random(255),0);
-	  processing.ellipse(this.p[0],this.p[1],2,2);
-	}
+		update() {
+		  this.pos[0] +=  p.random(this.spread) -  p.random(this.spread);
+		  this.pos[1] +=  p.random(this.spread) -  p.random(this.spread);
+		}
 
-	Ball.prototype.run = function() {
-	  this.update();
-	  this.draw();
+		draw() {
+		  p.noStroke();
+		  p.fill(200+ p.random(50), 0, 0, 150);
+		  p.ellipse(this.pos[0], this.pos[1], this.size, this.size);
+		  p.fill(255, p.random(255), 0);
+		  p.ellipse(this.pos[0], this.pos[1], 2, 2);
+		}
+
+		run() {
+		  this.update();
+		  this.draw();
+		}
+
 	}
 
 }
 
 function main() {
-	var canvas = document.getElementById("canvas1");
-	var processingInstance = new Processing(canvas, sketch);
+	let canvas = document.getElementById("canvas1");
+	let pInstance = new Processing(canvas, sketch);
 }
 
 window.onload = main;

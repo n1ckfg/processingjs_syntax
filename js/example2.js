@@ -1,46 +1,49 @@
 "use strict";
 
-function sketch(processing) {
+function sketch(p) {
 
-	var ball;
+	let ball;
 
-	processing.setup = function() {
-		processing.size(640,480);
+	p.setup = function() {
+		p.size(640,480);
 		ball = new Ball();			
 	}
 
 	// draw function, by default it will be called 60 times per second
-	processing.draw = function() {
-		processing.background(127);
+	p.draw = function() {
+		p.background(127);
 		ball.run();
 	}
 
-	// Ball class
-	function Ball() {
-	  this.p = [processing.random(processing.width), processing.random(processing.height)];
-	  this.size = processing.random(100, 300);
-	  this.speed = 1;
-	}
+	class Ball {
 
-	Ball.prototype.update = function() {
-	  this.p[0] += processing.random(-this.speed, this.speed);
-	  this.p[1] += processing.random(-this.speed, this.speed);
-	}
+		constructor() {
+		  this.pos = [p.random(p.width), p.random(p.height)];
+		  this.size = p.random(100, 300);
+		  this.speed = 1;
+		}
 
-	Ball.prototype.draw = function() {
-	  processing.ellipse(this.p[0], this.p[1], this.size, this.size);
-	}
+		update() {
+		  this.pos[0] += p.random(-this.speed, this.speed);
+		  this.pos[1] += p.random(-this.speed, this.speed);
+		}
 
-	Ball.prototype.run = function() {
-	  this.update();
-	  this.draw();
+		draw() {
+		  p.ellipse(this.pos[0], this.pos[1], this.size, this.size);
+		}
+
+		run() {
+		  this.update();
+		  this.draw();
+		}
+
 	}
 
 }
 
 function main() {
-	var canvas = document.getElementById("canvas1");
-	var processingInstance = new Processing(canvas, sketch);
+	let canvas = document.getElementById("canvas1");
+	let pInstance = new Processing(canvas, sketch);
 }
 
 window.onload = main;
